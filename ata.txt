@@ -1,8 +1,7 @@
 Monitor de umidade de solos para plantas domésticas – Arduino Uno
 
 1. Ideia do projeto
-O projeto consiste em um sistema de monitoramento da umidade de solos para plantas domésticas. Com a utilização do arduino e componentes eletrônicos, visamos que o projeto sirva como um indicador visual e sonoro do nível de umidade do solo. Neste projeto, temos três leds que acendem conforme o nível detectado pelo sensor de umidade: vermelho para solo seco, amarelo para umidade moderada e azul para solo totalmente úmido. Aĺém de informações visuais por led, contamos com a utilização do lcd 16x2 que disponibiliza informações mais detalhadas para o usuário e através de um teclado matricial deve também permitir opções de configurações. O sistema também deve ser capaz de emitir avisos sonoros conforme as configurações do usuário e armazenar hora e data para tais configurações.
-
+O projeto consiste em um sistema de monitoramento da umidade de solos para plantas domésticas. Com a utilização do arduino e componentes eletrônicos, visamos que o projeto sirva como um indicador visual e sonoro do nível de umidade do solo. Neste projeto, temos três leds que acendem conforme o nível detectado pelo sensor de umidade: vermelho para solo seco, amarelo para umidade moderada e azul para solo totalmente úmido. Aĺém de informações visuais por led, contamos com a utilização do lcd 16x2 que disponibiliza as seguintes informações: status da umidade do solo, hora e data. O sistema também emitirá um som pelo buzzer quando o solo estiver seco, o teclado matricial servirá como botão para interromper o aviso sonoro gerado pelo buzzer. Configurações poderão ser personalizadas pela porta serial, são elas: hora, data, período de funcionamento do buzzer e valor de umidade para cada status
 
 2. Materiais utilizados
  - Arduino Uno
@@ -17,8 +16,7 @@ O projeto consiste em um sistema de monitoramento da umidade de solos para plant
  - Potenciometro
  - RTC DS3231
 
-
-3. Tarefas dos integrantes:
- - Allison:
- - Barbara:
- - Vitor:
+3. Divisão de trabalho
+ - Allison: Código e Manutenção
+ - Barbara: Projeto de Hardware e Manutenção
+ - Vitor: Código e documentação
