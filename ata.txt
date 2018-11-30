@@ -19,4 +19,4 @@ O projeto consiste em um sistema de monitoramento da umidade de solos para plant
 3. Divisão de trabalho
  - Allison: Código e Manutenção
  - Barbara: Projeto de Hardware e Manutenção
- - Vitor: Código e documentação
+ - Vitor: Código e Documentação

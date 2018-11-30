@@ -9,9 +9,14 @@ LiquidCrystal lcd(2,3,4,5,6,7);
 
 int valor_analogico;
 int last_status;
+int status_buzzer = 0;
  
 void setup()
 {
+
+	pinMode(12, INPUT); //linha - teclado
+	digitalWrite(12, LOW);
+	
 
   Serial.begin(9600);
   pinMode(pino_sinal_analogico, INPUT);
@@ -36,6 +41,13 @@ void setup()
 void loop()
 {
   
+  if(status_buzzer == 1){
+  	digitalWrite(buzzer,HIGH);
+  }else{
+  	digitalWrite(buzzer,LOW);
+  	delay(2000);
+  }
+
   //Le o valor do pino A0 do sensor
   valor_analogico = analogRead(pino_sinal_analogico);
  
@@ -47,6 +59,7 @@ void loop()
     apagaleds();
     digitalWrite(pino_led_azul, HIGH);
     last_status = 3;
+    status_buzzer = 0;
   }
  
   //Solo com umidade moderada, acende led amarelo
@@ -57,6 +70,7 @@ void loop()
     apagaleds();
     digitalWrite(pino_led_amarelo, HIGH);
     last_status = 2;
+    status_buzzer = 0;
   }
  
   //Solo seco, acende led vermelho
@@ -67,20 +81,13 @@ void loop()
     apagaleds();
     digitalWrite(pino_led_vermelho, HIGH);
     last_status = 1;
-    digitalWrite(buzzer,HIGH);
-    delay(500);
-    digitalWrite(buzzer,LOW);
-    delay(100);
-    digitalWrite(buzzer,HIGH);
-    delay(500);
-    digitalWrite(buzzer,LOW);
-    delay(100);
-    digitalWrite(buzzer,HIGH);
-    delay(500);
-    digitalWrite(buzzer,LOW);
-    delay(100);
+    status_buzzer = 1;
   }
-  delay(100);
+  if(digitalRead(12) == HIGH){
+    	status_buzzer = 0;
+  }
+
+  Serial.println(status_buzzer);
 }
  
 void apagaleds()
