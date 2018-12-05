@@ -1,12 +1,14 @@
 #include <LiquidCrystal.h>
+#include <DS1307.h>
 #define pino_sinal_analogico A0
 #define pino_led_vermelho 8
 #define pino_led_amarelo 9
 #define pino_led_azul 10
 #define buzzer 11
 
-LiquidCrystal lcd(2,3,4,5,6,7);
+DS1307 rtc(A4, A5);
 
+LiquidCrystal lcd(2,3,4,5,6,7);
 int valor_analogico;
 int last_status;
 int status_buzzer = 0;
@@ -36,6 +38,15 @@ void setup()
   lcd.print(".");
   delay(500);
   lcd.clear();
+
+  //As linhas abaixo setam a data e hora do modulo
+  //e podem ser comentada apos a primeira utilizacao
+  rtc.setTime(20, 37, 0);     //Define o horario
+  rtc.setDate(5, 12, 2018);   //Define o dia, mes e ano
+   
+  //Definicoes do pino SQW/Out
+  rtc.setSQWRate(SQW_RATE_1);
+  rtc.enableSQW(true);
 }
  
 void loop()
@@ -45,7 +56,6 @@ void loop()
   	digitalWrite(buzzer,HIGH);
   }else{
   	digitalWrite(buzzer,LOW);
-  	delay(2000);
   }
 
   //Le o valor do pino A0 do sensor
@@ -55,7 +65,12 @@ void loop()
   if (valor_analogico > 0 && valor_analogico < 670 && last_status != 3)
   {
     lcd.clear();
-    lcd.print("solo umido!");
+    lcd.setCursor(3,0);
+    lcd.print("SOLO UMIDO");
+    lcd.setCursor(0, 1);
+    lcd.print(rtc.getDateStr());
+    lcd.print(' ');
+    lcd.print(rtc.getTimeStr());
     apagaleds();
     digitalWrite(pino_led_azul, HIGH);
     last_status = 3;
@@ -63,10 +78,15 @@ void loop()
   }
  
   //Solo com umidade moderada, acende led amarelo
-  if (valor_analogico > 670 && valor_analogico < 800 && last_status != 2)
+  if (valor_analogico > 670 && valor_analogico < 900 && last_status != 2)
   {
     lcd.clear();
-    lcd.print("solo moderado!");
+    lcd.setCursor(1,0);
+    lcd.print("SOLO MODERADO");
+    lcd.setCursor(0, 1);
+    lcd.print(rtc.getDateStr());
+    lcd.print(' ');
+    lcd.print(rtc.getTimeStr());
     apagaleds();
     digitalWrite(pino_led_amarelo, HIGH);
     last_status = 2;
@@ -74,10 +94,15 @@ void loop()
   }
  
   //Solo seco, acende led vermelho
-  if (valor_analogico > 800 && valor_analogico < 1024 && last_status != 1)
+  if (valor_analogico > 900 && valor_analogico < 1024 && last_status != 1)
   {
     lcd.clear();
-    lcd.print("solo seco!");
+    lcd.setCursor(3,0);
+    lcd.print("SOLO SECO");
+    lcd.setCursor(0, 1);
+    lcd.print(rtc.getDateStr());
+    lcd.print(' ');
+    lcd.print(rtc.getTimeStr());
     apagaleds();
     digitalWrite(pino_led_vermelho, HIGH);
     last_status = 1;
@@ -87,7 +112,7 @@ void loop()
     	status_buzzer = 0;
   }
 
-  Serial.println(status_buzzer);
+
 }
  
 void apagaleds()
