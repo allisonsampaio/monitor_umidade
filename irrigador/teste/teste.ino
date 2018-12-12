@@ -1,41 +1,54 @@
-//Programa : Relogio com modulo RTC DS1307
-//Autor : FILIPEFLOP
- 
-//Carrega a biblioteca do RTC DS1307
-#include <DS1307.h>
- 
-//Modulo RTC DS1307 ligado as portas A4 e A5 do Arduino 
-DS1307 rtc(A4, A5);
- 
-void setup()
-{
-  //Aciona o relogio
-  rtc.halt(false);
-   
-  //As linhas abaixo setam a data e hora do modulo
-  //e podem ser comentada apos a primeira utilizacao
-  rtc.setDOW(FRIDAY);      //Define o dia da semana
-  rtc.setTime(20, 37, 0);     //Define o horario
-  rtc.setDate(6, 6, 2014);   //Define o dia, mes e ano
-   
-  //Definicoes do pino SQW/Out
-  rtc.setSQWRate(SQW_RATE_1);
-  rtc.enableSQW(true);
-   
+#include <Wire.h>
+#include "RTClib.h"
+
+RTC_DS1307 rtc;
+
+void setup () {
+  Wire.begin();
+  rtc.begin();
+
   Serial.begin(9600);
+  pinMode(13,OUTPUT);
+
+  if (!rtc.isrunning()) {
+    Serial.println("RTC parado, vou ajustar com a hora da compilacao...");
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
 }
- 
-void loop()
-{
-  //Mostra as informações no Serial Monitor
-  Serial.print("Hora : ");
-  Serial.print(rtc.getTimeStr());
-  Serial.print(" ");
-  Serial.print("Data : ");
-  Serial.print(rtc.getDateStr(FORMAT_SHORT));
-  Serial.print(" ");
-  Serial.println(rtc.getDOWStr(FORMAT_SHORT));
-   
-  //Aguarda 1 segundo e repete o processo
-  delay (1000);
+
+void printnn(int n) {
+  // imprime um numero com 2 digitos
+  // acrescenta zero `a esquerda se necessario
+  String digitos= String(n);
+  if (digitos.length()==1) {
+    digitos="0" + digitos;
+  }  
+  Serial.print(digitos); 
+}  
+
+void loop () {
+    // Obtem a data e hora correntes e armazena em tstamp
+    DateTime tstamp = rtc.now();
+
+    // Mostra no monitor serial a data e hora correntes
+    printnn(tstamp.day());
+    Serial.print('/');
+    printnn(tstamp.month());
+    Serial.print('/');
+    Serial.print(tstamp.year(), DEC);
+    Serial.print(' ');
+    printnn(tstamp.hour());
+    Serial.print(':');
+    printnn(tstamp.minute());
+    Serial.print(':');
+    printnn(tstamp.second());
+    Serial.println();
+    
+    // espera alguns segundos piscando o led interno
+    for (short i=0; i<=4; i++) {
+      digitalWrite(13,HIGH);
+      delay(1000);
+      digitalWrite(13,LOW);
+      delay(1000);
+    }  
 }

@@ -1,0 +1,31 @@
+//Serial
+    if(Serial.available()) {
+
+      Serial.println("*** MENU ***");
+      Serial.println("(1) - Hora");
+      Serial.println("(2) - Data");
+      Serial.println("(3) - Periodo de funcionamento do buzzer");
+      Serial.println("(4) - Niveis de humidade");
+      Serial.print("Digite o numero da opcao desejada: ");
+      option = Serial.read();
+
+      Serial.print("I received: ");
+      Serial.println(option, DEC);
+
+      switch(option){
+        case 1:
+        break;
+
+        case 2:
+        break;
+
+        case 3:
+        break;
+
+        case 4:
+        break;
+
+        default:
+        Serial.println("Opcao invalida!");
+      }
+    }
