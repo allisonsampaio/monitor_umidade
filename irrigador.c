@@ -1,3 +1,9 @@
+/* Monitor de Umidade de Solos para Plantas Domésticas - Sistemas Microcontrolados
+  Allison Alfredo de Oliveira Sampaio
+  Bárbara Andrade Pasqualotto
+  Vitor Cimetan de Souza
+*/
+
 #include <LiquidCrystal.h>
 #include <DS1307.h>
 #include <Wire.h>
